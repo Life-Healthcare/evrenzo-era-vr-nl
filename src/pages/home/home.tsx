@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sphere from "@/components/sphere/sphere";
 import Button from "@/components/button/button";

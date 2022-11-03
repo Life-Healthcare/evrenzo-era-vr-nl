@@ -20,7 +20,7 @@ import Timelapse from "@/pages/timelapse/timelapse";
 import End from "@/pages/end/end";
 import ResetAppOnExit from "@/components/reset-app-on-exit/reset-app-on-exit";
 import ResetApp from "@/components/reset-app/reset-app";
-import sessionManager from "@/services/session-manager";
+import useSession from "@/hooks/use-session";
 
 export default function App() {
   const { isPresenting } = useAppState();
@@ -71,24 +71,25 @@ export default function App() {
 
 const AppRoutes = () => {
   const { isPresenting } = useAppState();
-  const location = useLocation();
+  const { pathname } = useLocation();
+  const session = useSession(
+    "https://analytics-server.finervision.com/api/save-sessions",
+    "evrenzo-era-vr-nl"
+  );
   
   React.useEffect(() => {
-    if(location.pathname === "/") {
-      sessionManager.start();
+    if(pathname === "/") {
+      session.start();
     }
 
-    sessionManager.page(location.pathname);
-    console.log(location.pathname);
-
-    (async () => {
-      await sessionManager.sendToServer();
-    })();
-
-    if(location.pathname === "/end") {
-      sessionManager.end();
+    if(pathname === "/end") {
+      session.end();
     }
-  }, [location])
+
+    window.onbeforeunload = () => {
+      session.end();
+    };
+  }, [session, pathname])
 
   return (
     <>

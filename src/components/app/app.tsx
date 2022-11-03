@@ -80,14 +80,17 @@ const AppRoutes = () => {
   React.useEffect(() => {
     if(pathname === "/") {
       session.start();
+      console.log("session started");
     }
 
     if(pathname === "/end") {
       session.end();
+      console.log("session ended");
     }
 
     window.onbeforeunload = () => {
       session.end();
+      console.log("session ended");
     };
   }, [session, pathname])
 

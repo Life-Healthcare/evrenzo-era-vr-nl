@@ -79,6 +79,7 @@ const AppRoutes = () => {
     }
 
     sessionManager.page(location.pathname);
+    console.log(location.pathname);
 
     (async () => {
       await sessionManager.sendToServer();
